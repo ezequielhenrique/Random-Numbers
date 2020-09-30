@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 from scripts import is_integer, generate_numbers
 
 
@@ -7,7 +7,8 @@ class Interface:
     def __init__(self, master):
         self.master = master
         self.master.title('Random Numbers')
-        self.master.geometry('400x300')
+        self.master.geometry('500x400')
+        self.master.iconbitmap('images/icon.ico')
         self.master.configure(background='#BFBFBF')
         self.master.resizable(False, False)
 
@@ -18,7 +19,7 @@ class Interface:
 
         label_title = tk.Label(self.frame_master, text='Random Numbers', bg=self.color_grey,
                                font=('Roboto', 16, 'bold'))
-        label_title.pack(pady=10)
+        label_title.pack(pady=15)
 
         frame_line1 = tk.Frame(self.frame_master, bg=self.color_grey)
         frame_line1.pack(anchor='w')
@@ -46,10 +47,18 @@ class Interface:
 
         button_generate = tk.Button(self.frame_master, text='Gerar', relief='solid', bd=1, bg='black',
                                     fg=self.color_grey, font=('Roboto', 12, 'bold'), padx=10, command=self.get_values)
-        button_generate.pack()
+        button_generate.pack(pady=5)
 
-        message = tk.Message(self.frame_master, width=30, font=('Roboto', 12))
-        message.pack()
+        frame_text = tk.Frame(self.frame_master, bg=self.color_grey)
+        frame_text.pack(pady=10)
+
+        self.display_text = tk.Text(self.frame_master, width=50, height=10, font=('Roboto', 12), wrap='word')
+        self.display_text.pack(side='left')
+
+        scroll = ttk.Scrollbar(self.frame_master, orient='vertical', command=self.display_text.yview)
+        scroll.pack(side='left', fill='y')
+
+        self.display_text.configure(yscrollcommand=scroll.set)
 
     def get_values(self):
         num_numbers = self.entry_qdt.get()
@@ -58,8 +67,14 @@ class Interface:
 
         if is_integer(num_numbers) and is_integer(from_number) and is_integer(to_number):
             numbers = generate_numbers(int(num_numbers), int(from_number), int(to_number))
-            print(numbers)
-            print(len(numbers))
+            self.display_text.delete(1.0, 'end')
+
+            text = ''
+            for n in numbers:
+                text += f'{str(n)} - '
+            text += 'Fim'
+
+            self.display_text.insert(tk.INSERT, text)
         else:
             messagebox.showerror('Error', 'Só são aceitos números inteiros!')
             self.entry_qdt.delete(0, 'end')
