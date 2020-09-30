@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import messagebox
+from scripts import is_integer, generate_numbers
 
 
 class Interface:
@@ -24,8 +26,8 @@ class Interface:
         label_qtd = tk.Label(frame_line1, text='Quantidade:', bg=self.color_grey, font=('Roboto', 12))
         label_qtd.pack(side='left')
 
-        entry_qdt = tk.Entry(frame_line1, relief='solid', bd=1, width=4, font=('Roboto', 12))
-        entry_qdt.pack(side='left')
+        self.entry_qdt = tk.Entry(frame_line1, relief='solid', bd=1, width=4, font=('Roboto', 12))
+        self.entry_qdt.pack(side='left')
 
         frame_line2 = tk.Frame(self.frame_master, bg=self.color_grey)
         frame_line2.pack(pady=10, anchor='w')
@@ -33,17 +35,36 @@ class Interface:
         label_num = tk.Label(frame_line2, text='Números entre:', bg=self.color_grey, font=('Roboto', 12))
         label_num.pack(side='left')
 
-        entry_num1 = tk.Entry(frame_line2, relief='solid', bd=1, width=4, font=('Roboto', 12))
-        entry_num1.pack(side='left')
+        self.entry_num1 = tk.Entry(frame_line2, relief='solid', bd=1, width=4, font=('Roboto', 12))
+        self.entry_num1.pack(side='left')
 
         label_e = tk.Label(frame_line2, text='e', bg=self.color_grey, font=('Roboto', 12))
         label_e.pack(side='left')
 
-        entry_num2 = tk.Entry(frame_line2, relief='solid', bd=1, width=4, font=('Roboto', 12))
-        entry_num2.pack(side='left')
+        self.entry_num2 = tk.Entry(frame_line2, relief='solid', bd=1, width=4, font=('Roboto', 12))
+        self.entry_num2.pack(side='left')
 
-        message = tk.Message(self.frame_master, width=50, font=('Roboto', 12))
+        button_generate = tk.Button(self.frame_master, text='Gerar', relief='solid', bd=1, bg='black',
+                                    fg=self.color_grey, font=('Roboto', 12, 'bold'), padx=10, command=self.get_values)
+        button_generate.pack()
+
+        message = tk.Message(self.frame_master, width=30, font=('Roboto', 12))
         message.pack()
+
+    def get_values(self):
+        num_numbers = self.entry_qdt.get()
+        from_number = self.entry_num1.get()
+        to_number = self.entry_num2.get()
+
+        if is_integer(num_numbers) and is_integer(from_number) and is_integer(to_number):
+            numbers = generate_numbers(int(num_numbers), int(from_number), int(to_number))
+            print(numbers)
+            print(len(numbers))
+        else:
+            messagebox.showerror('Error', 'Só são aceitos números inteiros!')
+            self.entry_qdt.delete(0, 'end')
+            self.entry_num1.delete(0, 'end')
+            self.entry_num2.delete(0, 'end')
 
 
 app = tk.Tk()
