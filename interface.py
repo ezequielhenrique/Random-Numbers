@@ -8,7 +8,7 @@ class Interface:
         self.master = master
         self.master.title('Random Numbers')
         self.master.geometry('500x400')
-        self.master.iconbitmap('images/icon.ico')
+        self.master.iconbitmap('images/icongenerate.ico')
         self.master.configure(background='#BFBFBF')
         self.master.resizable(False, False)
 
