@@ -66,15 +66,24 @@ class Interface:
         to_number = self.entry_num2.get()
 
         if is_integer(num_numbers) and is_integer(from_number) and is_integer(to_number):
-            numbers = generate_numbers(int(num_numbers), int(from_number), int(to_number))
-            self.display_text.delete(1.0, 'end')
+            num_numbers = int(num_numbers)
+            from_number = int(from_number)
+            to_number = int(to_number)
+            if num_numbers > to_number-from_number:
+                messagebox.showerror('Error', 'Intervalo numérico errado')
+            else:
+                try:
+                    numbers = generate_numbers(num_numbers, from_number, to_number)
+                    self.display_text.delete(1.0, 'end')
 
-            text = ''
-            for n in numbers:
-                text += f'{str(n)} - '
-            text += 'Fim'
+                    text = ''
+                    for n in numbers:
+                        text += f'{str(n)} - '
+                    text += 'Fim'
 
-            self.display_text.insert(tk.INSERT, text)
+                    self.display_text.insert(tk.INSERT, text)
+                except ValueError:
+                    messagebox.showerror('Error', 'ValueError: Intervalo vazio')
         else:
             messagebox.showerror('Error', 'Só são aceitos números inteiros!')
             self.entry_qdt.delete(0, 'end')
