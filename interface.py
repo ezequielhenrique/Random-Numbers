@@ -1,6 +1,17 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from scripts import is_integer, generate_numbers
+import os
+
+
+def resource_path(relative_path):
+    import sys
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+
+images_dir = resource_path('images')
 
 
 class Interface:
@@ -8,7 +19,7 @@ class Interface:
         self.master = master
         self.master.title('Random Numbers')
         self.master.geometry('500x400')
-        self.master.iconbitmap('images/icongenerate.ico')
+        self.master.iconbitmap(images_dir+'/icongenerate.ico')
         self.master.configure(background='#BFBFBF')
         self.master.resizable(False, False)
 
